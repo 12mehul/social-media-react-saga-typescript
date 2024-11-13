@@ -1,10 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./Register";
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Register />} />

@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { registrationRequest } from "./redux/slice/registrationSlice";
 import { IRegistration } from "./redux/types/IRegistration";
 import * as Yup from "yup";
+import bgImage from "./assets/bg-image.png";
 
 const initialValues: IRegistration = {
   firstname: "",
@@ -38,114 +39,132 @@ const Register = () => {
     });
 
   return (
-    <div
+    <Container
+      className="d-flex justify-content-center align-items-center"
       style={{
-        background: "linear-gradient(135deg, #e0f7fa, #80deea)",
+        minHeight: "100vh",
       }}
     >
-      <Container
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          minHeight: "100vh",
-        }}
-      >
-        <Card className="p-2 rounded-4" bg="white" border="light">
-          <h3 className="text-center mb-4">Register</h3>
-          <Form onSubmit={handleSubmit}>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="firstname">
-                <Form.Label>First Name</Form.Label>
+      <Row className="w-100">
+        <Col md={6} className="d-none d-md-block p-0">
+          <div
+            style={{
+              height: "100vh",
+              backgroundImage: `url(${bgImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        </Col>
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center"
+        >
+          <Card
+            className="p-4 rounded-4 shadow-sm bg-transparent"
+            style={{ maxWidth: "500px", width: "100%" }}
+          >
+            <h3 className="text-center mb-4 text-muted fw-bold">Sign Up</h3>
+            <Form onSubmit={handleSubmit}>
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="firstname">
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="firstname"
+                    placeholder="Enter First Name"
+                    value={values.firstname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.firstname && errors.firstname && (
+                    <Form.Text className="text-danger">
+                      {errors.firstname}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+                <Form.Group as={Col} controlId="lastname">
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="lastname"
+                    placeholder="Enter Last Name"
+                    value={values.lastname}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.lastname && errors.lastname && (
+                    <Form.Text className="text-danger">
+                      {errors.lastname}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              </Row>
+              <Form.Group className="mb-3" as={Col} controlId="email">
+                <Form.Label>Email</Form.Label>
                 <Form.Control
-                  className="fs-5"
-                  type="text"
-                  name="firstname"
-                  placeholder="Enter First Name"
-                  value={values.firstname}
+                  className="p-2 bg-dark-subtle"
+                  type="email"
+                  name="email"
+                  placeholder="Enter Email"
+                  value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {touched.firstname && errors.firstname && (
-                  <Form.Text className="text-danger">
-                    {errors.firstname}
-                  </Form.Text>
+                {touched.email && errors.email && (
+                  <Form.Text className="text-danger">{errors.email}</Form.Text>
                 )}
               </Form.Group>
-              <Form.Group as={Col} controlId="lastname">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  className="fs-5"
-                  type="text"
-                  name="lastname"
-                  placeholder="Enter Last Name"
-                  value={values.lastname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.lastname && errors.lastname && (
-                  <Form.Text className="text-danger">
-                    {errors.lastname}
-                  </Form.Text>
-                )}
-              </Form.Group>
-            </Row>
-            <Form.Group className="mb-3" as={Col} controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                className="fs-5"
-                type="email"
-                name="email"
-                placeholder="Enter Email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {touched.email && errors.email && (
-                <Form.Text className="text-danger">{errors.email}</Form.Text>
-              )}
-            </Form.Group>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  className="fs-5"
-                  type="password"
-                  name="password"
-                  placeholder="Enter Password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.password && errors.password && (
-                  <Form.Text className="text-danger">
-                    {errors.password}
-                  </Form.Text>
-                )}
-              </Form.Group>
-              <Form.Group as={Col} controlId="confirmpass">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  className="fs-5"
-                  type="password"
-                  name="confirmpass"
-                  placeholder="Enter Confirm Password"
-                  value={values.confirmpass}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {touched.confirmpass && errors.confirmpass && (
-                  <Form.Text className="text-danger">
-                    {errors.confirmpass}
-                  </Form.Text>
-                )}
-              </Form.Group>
-            </Row>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </Card>
-      </Container>
-    </div>
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="password">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.password && errors.password && (
+                    <Form.Text className="text-danger">
+                      {errors.password}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+                <Form.Group as={Col} controlId="confirmpass">
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="password"
+                    name="confirmpass"
+                    placeholder="Enter Confirm Password"
+                    value={values.confirmpass}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {touched.confirmpass && errors.confirmpass && (
+                    <Form.Text className="text-danger">
+                      {errors.confirmpass}
+                    </Form.Text>
+                  )}
+                </Form.Group>
+              </Row>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 p-2 rounded-3"
+              >
+                Sign Up
+              </Button>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
