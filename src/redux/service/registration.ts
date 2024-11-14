@@ -1,8 +1,14 @@
 import axios from "axios";
 import { IRegistration } from "../types/IRegistration";
 
-async function registrationData(data: IRegistration): Promise<IRegistration> {
-  return axios.post("http://localhost:4000/auth/register", data);
+async function registrationService(
+  data: IRegistration
+): Promise<IRegistration> {
+  const response = await axios.post(
+    "http://localhost:4000/auth/register",
+    data
+  );
+  return response.data;
 }
 
-export default registrationData;
+export default registrationService;

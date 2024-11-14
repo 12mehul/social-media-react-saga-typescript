@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IStateSlice } from "../types/IStateSlice";
 import { IRegistration } from "../types/IRegistration";
+import { IUserReponse } from "../types/IAPIResponse";
 
 const initialState: IStateSlice<IRegistration> = {
   loading: false,
@@ -27,10 +28,9 @@ const registrationSlice = createSlice({
     },
     registrationSuccess: (
       state: IStateSlice<IRegistration>,
-      action: PayloadAction<IRegistration>
+      action: PayloadAction<IUserReponse>
     ) => {
       state.loading = false;
-      state.data = action.payload;
     },
     registrationFailure: (
       state: IStateSlice<any>,

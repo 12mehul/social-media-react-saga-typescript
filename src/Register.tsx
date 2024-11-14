@@ -161,6 +161,14 @@ const Register = () => {
                 Sign Up
               </Button>
             </Form>
+            <p className="text-center mt-2 text-white">
+              Already have an account?
+              <a href="/login" className="text-white text-decoration-none">
+                {" "}
+                Login
+              </a>{" "}
+              here
+            </p>
           </Card>
         </Col>
       </Row>

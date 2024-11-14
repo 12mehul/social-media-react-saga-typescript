@@ -6,11 +6,12 @@ import {
   registrationRequest,
   registrationSuccess,
 } from "../slice/registrationSlice";
-import registrationData from "../service/registration";
+import registrationService from "../service/registration";
+import { IUserReponse } from "../types/IAPIResponse";
 
 function* registrationSaga(action: PayloadAction<IRegistration>) {
   try {
-    const res: IRegistration = yield call(registrationData, action.payload);
+    const res: IUserReponse = yield call(registrationService, action.payload);
     yield put(registrationSuccess(res));
   } catch (error) {
     yield put(registrationFailure(error));
