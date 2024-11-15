@@ -7,14 +7,17 @@ import {
   registrationSuccess,
 } from "../slice/registrationSlice";
 import registrationService from "../service/registration";
-import { IUserReponse } from "../types/IAPIResponse";
+import { IUserResponse } from "../types/IAPIResponse";
+import toast from "react-hot-toast";
 
 function* registrationSaga(action: PayloadAction<IRegistration>) {
   try {
-    const res: IUserReponse = yield call(registrationService, action.payload);
+    const res: IUserResponse = yield call(registrationService, action.payload);
     yield put(registrationSuccess(res));
-  } catch (error) {
+    toast.success("Registration successfull!");
+  } catch (error: any) {
     yield put(registrationFailure(error));
+    toast.error(error.response?.data?.message || "Registration failed!");
   }
 }
 

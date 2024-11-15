@@ -1,17 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IStateSlice } from "../types/IStateSlice";
 import { IRegistration } from "../types/IRegistration";
-import { IUserReponse } from "../types/IAPIResponse";
+import { IUserResponse } from "../types/IAPIResponse";
 
-const initialState: IStateSlice<IRegistration> = {
+interface RegistrationState {
+  loading: boolean;
+  registrationData: IRegistration | null;
+  responseData: IUserResponse | null;
+  error: string | null;
+}
+
+const initialState: RegistrationState = {
   loading: false,
-  data: {
+  registrationData: {
     firstname: "",
     lastname: "",
     email: "",
     password: "",
     confirmpass: "",
   },
+  responseData: null,
   error: null,
 };
 
@@ -20,20 +27,21 @@ const registrationSlice = createSlice({
   initialState,
   reducers: {
     registrationRequest: (
-      state: IStateSlice<IRegistration>,
+      state: RegistrationState,
       action: PayloadAction<IRegistration>
     ) => {
       state.loading = true;
-      state.data = action.payload;
+      state.registrationData = action.payload;
     },
     registrationSuccess: (
-      state: IStateSlice<IRegistration>,
-      action: PayloadAction<IUserReponse>
+      state: RegistrationState,
+      action: PayloadAction<IUserResponse>
     ) => {
       state.loading = false;
+      state.responseData = action.payload;
     },
     registrationFailure: (
-      state: IStateSlice<any>,
+      state: RegistrationState,
       action: PayloadAction<any>
     ) => {
       state.loading = false;

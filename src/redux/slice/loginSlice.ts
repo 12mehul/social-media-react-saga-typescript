@@ -1,14 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IStateSlice } from "../types/IStateSlice";
 import { ILogin } from "../types/ILogin";
-import { IUserReponse } from "../types/IAPIResponse";
+import { IUserResponse } from "../types/IAPIResponse";
 
-const initialState: IStateSlice<ILogin> = {
+interface LoginState {
+  loading: boolean;
+  loginData: ILogin | null;
+  responseData: IUserResponse | null;
+  error: string | null;
+}
+
+const initialState: LoginState = {
   loading: false,
-  data: {
+  loginData: {
     email: "",
     password: "",
   },
+  responseData: null,
   error: null,
 };
 
@@ -16,20 +23,15 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    loginRequest: (
-      state: IStateSlice<ILogin>,
-      action: PayloadAction<ILogin>
-    ) => {
+    loginRequest: (state: LoginState, action: PayloadAction<ILogin>) => {
       state.loading = true;
-      state.data = action.payload;
+      state.loginData = action.payload;
     },
-    loginSuccess: (
-      state: IStateSlice<ILogin>,
-      action: PayloadAction<IUserReponse>
-    ) => {
+    loginSuccess: (state: LoginState, action: PayloadAction<IUserResponse>) => {
       state.loading = false;
+      state.responseData = action.payload;
     },
-    loginFailure: (state: IStateSlice<any>, action: PayloadAction<any>) => {
+    loginFailure: (state: LoginState, action: PayloadAction<any>) => {
       state.loading = false;
       state.error = action.payload;
     },
