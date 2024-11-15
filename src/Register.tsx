@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "./redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, AppState } from "./redux/store/store";
 import { useFormik } from "formik";
 import { registrationRequest } from "./redux/slice/registrationSlice";
 import { IRegistration } from "./redux/types/IRegistration";
 import * as Yup from "yup";
-import bgImage from "./assets/bg-image.png";
+import socialImg from "./assets/social-img.png";
+import { useNavigate } from "react-router-dom";
 
 const initialValues: IRegistration = {
   firstname: "",
@@ -27,7 +28,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const data = useSelector<AppState>(
+    (state) => state.registration.responseData
+  );
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -35,34 +40,47 @@ const Register = () => {
       validationSchema,
       onSubmit: (values, action) => {
         dispatch(registrationRequest(values));
+        action.resetForm();
       },
     });
+
+  useEffect(() => {
+    if (data) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
+  }, [data]);
 
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
-      style={{
-        minHeight: "100vh",
-      }}
+      style={{ minHeight: "100vh" }}
     >
       <Row className="w-100">
-        <Col md={6} className="d-none d-md-block p-0">
-          <div
-            style={{
-              height: "100vh",
-              backgroundImage: `url(${bgImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center p-0"
+        >
+          <div style={{ maxWidth: "100%" }}>
+            <img
+              src={socialImg}
+              alt="Social Media Graphic"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
         </Col>
         <Col
           md={6}
           className="d-flex justify-content-center align-items-center"
         >
           <Card
-            className="p-4 rounded-4 shadow-sm bg-transparent"
-            style={{ maxWidth: "500px", width: "100%" }}
+            className="p-4 rounded-4 shadow-sm"
+            style={{
+              maxWidth: "500px",
+              width: "100%",
+              backgroundColor: "#9bdbc1",
+            }}
           >
             <h3 className="text-center mb-4 text-muted fw-bold">Sign Up</h3>
             <Form onSubmit={handleSubmit}>

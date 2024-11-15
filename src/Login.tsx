@@ -1,22 +1,26 @@
 import React from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import vectorImage from "./assets/social-vector.png";
+import socialImg from "./assets/social-img.png";
 
 const Login = () => {
   return (
     <Container
-      fluid
       className="d-flex justify-content-center align-items-center"
-      style={{
-        minHeight: "100vh",
-        overflow: "hidden",
-        padding: "0",
-        backgroundImage: `url(${vectorImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={{ minHeight: "100vh" }}
     >
       <Row className="w-100">
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center p-0"
+        >
+          <div style={{ maxWidth: "100%" }}>
+            <img
+              src={socialImg}
+              alt="Social Media Graphic"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+        </Col>
         <Col
           md={6}
           className="d-flex justify-content-center align-items-center"
