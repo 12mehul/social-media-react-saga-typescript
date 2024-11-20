@@ -14,7 +14,7 @@ function* loginSaga(action: PayloadAction<ILogin>) {
     toast.success("Login successfull!");
   } catch (error: any) {
     yield put(loginFailure(error));
-    toast.error(error.response?.data?.message || "Login failed!");
+    toast.error(error.response?.data || "Login failed!");
   }
 }
 

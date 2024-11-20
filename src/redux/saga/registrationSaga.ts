@@ -17,7 +17,7 @@ function* registrationSaga(action: PayloadAction<IRegistration>) {
     toast.success("Registration successfull!");
   } catch (error: any) {
     yield put(registrationFailure(error));
-    toast.error(error.response?.data?.message || "Registration failed!");
+    toast.error(error.response?.data || "Registration failed!");
   }
 }
 
