@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 import { registrationRequest } from "./redux/slice/registrationSlice";
 import { IRegistration } from "./redux/types/IRegistration";
 import * as Yup from "yup";
-import socialImg from "./assets/social-img.png";
+import socialImg from "./assets/register-img.png";
 import { useNavigate } from "react-router-dom";
 
 const initialValues: IRegistration = {
@@ -75,12 +75,8 @@ const Register = () => {
           className="d-flex justify-content-center align-items-center"
         >
           <Card
-            className="p-4 rounded-4 shadow-sm"
-            style={{
-              maxWidth: "500px",
-              width: "100%",
-              backgroundColor: "#9bdbc1",
-            }}
+            className="p-4 rounded-4 shadow-sm bg-transparent"
+            style={{ maxWidth: "500px", width: "100%" }}
           >
             <h3 className="text-center mb-4 text-muted fw-bold">Sign Up</h3>
             <Form onSubmit={handleSubmit}>
@@ -181,7 +177,7 @@ const Register = () => {
             </Form>
             <p className="text-center mt-2 text-white">
               Already have an account?
-              <a href="/login" className="text-white text-decoration-none">
+              <a href="/login" className="link-primary fw-semibold">
                 {" "}
                 Login
               </a>{" "}

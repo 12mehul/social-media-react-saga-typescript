@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import socialImg from "./assets/social-img.png";
+import socialImg from "./assets/login-img.png";
 
 const Login = () => {
   return (
@@ -9,18 +9,6 @@ const Login = () => {
       style={{ minHeight: "100vh" }}
     >
       <Row className="w-100">
-        <Col
-          md={6}
-          className="d-flex justify-content-center align-items-center p-0"
-        >
-          <div style={{ maxWidth: "100%" }}>
-            <img
-              src={socialImg}
-              alt="Social Media Graphic"
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-          </div>
-        </Col>
         <Col
           md={6}
           className="d-flex justify-content-center align-items-center"
@@ -61,13 +49,25 @@ const Login = () => {
             </Form>
             <p className="text-center mt-2 text-white">
               Don't have an account?
-              <a href="/" className="text-white text-decoration-none">
+              <a href="/" className="link-primary fw-semibold">
                 {" "}
                 SignUp
               </a>{" "}
               here
             </p>
           </Card>
+        </Col>
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center p-0"
+        >
+          <div style={{ maxWidth: "100%" }}>
+            <img
+              src={socialImg}
+              alt="Social Media Graphic"
+              style={{ maxWidth: "100%", height: "auto" }}
+            />
+          </div>
         </Col>
       </Row>
     </Container>
