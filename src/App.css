@@ -15,3 +15,23 @@
   background: var(--purple);
   font-family: "Inter", sans-serif;
 }
+
+/* Navbar Link Default Styles */
+.nav-icon {
+  color: var(--black);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-icon:hover {
+  color: #007bff;
+}
+
+.nav-label {
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.navbar .gap-4 .nav-link {
+  margin-right: 1.5rem;
+}
