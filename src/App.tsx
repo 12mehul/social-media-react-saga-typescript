@@ -4,7 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Register from "./Register";
 import Login from "./Login";
-import AuthenticatedRoutes from "./AuthenticatedRoutes";
+import AuthenticatedRoutes from "./routes/AuthenticatedRoutes";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 function App() {
   return (
@@ -12,7 +13,14 @@ function App() {
       <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route path="/*" element={<AuthenticatedRoutes />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoutes>
+                <AuthenticatedRoutes />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>

@@ -5,9 +5,9 @@ import socialIcon from "../assets/social-icon.webp";
 
 const Navbars = () => {
   return (
-    <Navbar className="py-2">
-      <Container fluid>
-        <Row className="w-100 align-items-center">
+    <Navbar>
+      <Container>
+        <Row className="w-100 align-items-center bg-gradient">
           {/* Left Side: Social Icon */}
           <Col xs={3} className="d-flex justify-content-start">
             <img

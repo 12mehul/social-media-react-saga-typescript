@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import Layout from "./common/Layout";
-import Home from "./Home";
+import Layout from "../common/Layout";
+import Home from "../Home";
 
 const AuthenticatedRoutes = () => {
   return (
