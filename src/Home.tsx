@@ -1,13 +1,27 @@
-import React from "react";
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
+import PeopleCards from "./components/PeopleCards";
+import SharePostCard from "./components/SharePostCard";
+import TrendingCards from "./components/TrendingCards";
+import SharePostDisplay from "./components/SharePostDisplay";
 
 const Home = () => {
   return (
-    <Container
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
-    >
-      <h1 className="text-center text-white">Welcome to Home Page</h1>
+    <Container>
+      <Row className="w-100">
+        {/* Left Column */}
+        <Col md={3}>
+          <PeopleCards />
+        </Col>
+        {/* Center Column */}
+        <Col md={6} className="mx-auto">
+          <SharePostCard />
+          <SharePostDisplay />
+        </Col>
+        {/* Right Column */}
+        <Col md={3}>
+          <TrendingCards />
+        </Col>
+      </Row>
     </Container>
   );
 };

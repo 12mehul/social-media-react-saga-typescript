@@ -7,7 +7,7 @@ const Navbars = () => {
   return (
     <Navbar>
       <Container>
-        <Row className="w-100 align-items-center bg-gradient">
+        <Row className="w-100 align-items-center bg-body rounded shadow-lg">
           {/* Left Side: Social Icon */}
           <Col xs={3} className="d-flex justify-content-start">
             <img

@@ -2,7 +2,7 @@
   --orange: #fca61f;
   --black: #242d49;
   --gray: #788097;
-  --bgColor: radial-gradient(circle, #b865db, #21a69b);
+  --bgColor: radial-gradient(circle, #d074f8, #42e8da);
   --pink: #ff919d;
   --glass: rgba(255, 255, 255, 0.54);
   --boxShadow: 0px 19px 60px rgb(0 0 0 / 8%);
@@ -14,6 +14,7 @@
   color: var(--black);
   background: var(--bgColor);
   font-family: "Inter", sans-serif;
+  min-height: 100vh;
 }
 
 /* Navbar Link Default Styles */
