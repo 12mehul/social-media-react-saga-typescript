@@ -3,7 +3,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 
 const PeopleCards = () => {
   return (
-    <Card className="bg-body rounded shadow-lg">
+    <Card className="bg-body rounded-4 shadow-lg">
       <Card.Header className="fw-bold fs-5" style={{ color: "#242d49" }}>
         People you may know...
       </Card.Header>

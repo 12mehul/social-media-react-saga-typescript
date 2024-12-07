@@ -1,19 +1,24 @@
 import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faCog, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faCog,
+  faUser,
+  faUserFriends,
+} from "@fortawesome/free-solid-svg-icons";
 import socialIcon from "../assets/social-icon.webp";
 
 const Navbars = () => {
   return (
     <Navbar>
       <Container>
-        <Row className="w-100 align-items-center bg-body rounded shadow-lg">
+        <Row className="w-100 align-items-center bg-body rounded-4 shadow-lg">
           {/* Left Side: Social Icon */}
           <Col xs={3} className="d-flex justify-content-start">
             <img
               src={socialIcon}
               alt="Social Media Logo"
-              style={{ maxWidth: "50px", height: "auto" }}
+              style={{ maxWidth: "50px", height: "auto", borderRadius: "10px" }}
             />
           </Col>
 
@@ -26,6 +31,13 @@ const Navbars = () => {
               >
                 <FontAwesomeIcon icon={faHome} size="xl" />
                 <span className="nav-label">Home</span>
+              </Nav.Link>
+              <Nav.Link
+                href="#friendlists"
+                className="nav-icon d-flex flex-column align-items-center fw-bold"
+              >
+                <FontAwesomeIcon icon={faUserFriends} size="xl" />
+                <span className="nav-label">Friends List</span>
               </Nav.Link>
               <Nav.Link
                 href="#profile"

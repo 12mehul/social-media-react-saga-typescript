@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMapMarkerAlt,
-  faCalendarAlt,
-  faLifeRing,
+  faThumbsUp,
+  faCommentDots,
+  faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SharePostDisplay = () => {
   return (
-    <Card className="bg-body rounded shadow-lg mt-2">
+    <Card className="bg-body rounded-4 shadow-lg mt-2">
       <Card.Header className="fw-semibold fs-6" style={{ color: "#242d49" }}>
         Mehul zavery
       </Card.Header>
@@ -23,31 +23,23 @@ const SharePostDisplay = () => {
           <Col xs={3} className="d-flex justify-content-between">
             <Button variant="light" title="Like" className="p-2 border-0">
               <FontAwesomeIcon
-                icon={faLifeRing}
+                icon={faThumbsUp}
                 size="lg"
-                className="text-primary"
+                className="text-body-secondary"
               />
             </Button>
-            <Button
-              variant="light"
-              title="Add Location"
-              className="p-2 border-0"
-            >
+            <Button variant="light" title="Comment" className="p-2 border-0">
               <FontAwesomeIcon
-                icon={faMapMarkerAlt}
+                icon={faCommentDots}
                 size="lg"
-                className="text-danger"
+                className="text-body-secondary"
               />
             </Button>
-            <Button
-              variant="light"
-              title="Pick a Date"
-              className="p-2 border-0"
-            >
+            <Button variant="light" title="Share" className="p-2 border-0">
               <FontAwesomeIcon
-                icon={faCalendarAlt}
+                icon={faShareAlt}
                 size="lg"
-                className="text-success"
+                className="text-body-secondary"
               />
             </Button>
           </Col>
