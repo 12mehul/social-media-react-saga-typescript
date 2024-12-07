@@ -11,6 +11,7 @@ function* loginSaga(action: PayloadAction<ILogin>) {
     const res: IUserResponse = yield call(loginService, action.payload);
     yield put(loginSuccess(res));
     localStorage.setItem("token", res.token);
+    localStorage.setItem("userId", res.user._id);
     toast.success("Login successfull!");
   } catch (error: any) {
     yield put(loginFailure(error));

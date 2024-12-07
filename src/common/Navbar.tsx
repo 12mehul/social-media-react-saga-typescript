@@ -7,8 +7,21 @@ import {
   faUserFriends,
 } from "@fortawesome/free-solid-svg-icons";
 import socialIcon from "../assets/social-icon.webp";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store/store";
+import { useEffect } from "react";
+import { ProfileRequest } from "../redux/slice/profileSlice";
 
 const Navbars = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(ProfileRequest(userId));
+    }
+  }, []);
+
   return (
     <Navbar>
       <Container>

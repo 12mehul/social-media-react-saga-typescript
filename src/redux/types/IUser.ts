@@ -1,4 +1,5 @@
 export interface IUser {
+  _id: string;
   email: string;
   password: string;
   firstname: string;
@@ -6,7 +7,13 @@ export interface IUser {
   isAdmin: boolean;
   followers: any[];
   following: any[];
-  _id: string;
+  profilePicture: string;
+  coverPicture: string;
+  about: string;
+  livesin: string;
+  worksAt: string;
+  country: string;
+  relationship: string;
   createdAt: string;
   updatedAt: string;
 }
