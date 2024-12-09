@@ -3,6 +3,7 @@ import watcherRegistration from "./registrationSaga";
 import watcherLogin from "./loginSaga";
 import watcherUser from "./userSaga";
 import watcherProfile from "./profileSaga";
+import watcherTimeline from "./timelineSaga";
 
 export default function* rootSagas() {
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSagas() {
     watcherLogin(),
     watcherUser(),
     watcherProfile(),
+    watcherTimeline(),
   ]);
 }

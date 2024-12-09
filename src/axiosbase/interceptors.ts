@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-const apiUrl = "http://localhost:4000";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 const adminFetch = axios.create({
   baseURL: apiUrl,

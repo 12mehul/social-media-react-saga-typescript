@@ -5,6 +5,7 @@ import registrationReducer from "../slice/registrationSlice";
 import loginReducer from "../slice/loginSlice";
 import userReducer from "../slice/userSlice";
 import profileReducer from "../slice/profileSlice";
+import timelineReducer from "../slice/timelineSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,6 +15,7 @@ const store = configureStore({
     login: loginReducer,
     user: userReducer,
     profile: profileReducer,
+    timeline: timelineReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),

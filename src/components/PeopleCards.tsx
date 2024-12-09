@@ -4,9 +4,10 @@ import { AppDispatch, AppState } from "../redux/store/store";
 import { IUser } from "../redux/types/IUser";
 import { useEffect } from "react";
 import { UserRequest } from "../redux/slice/userSlice";
+import defaultProfile from "../assets/defaultProfile.png";
 
 const PeopleCards = () => {
-  const apiUrl = "http://localhost:4000/images";
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch<AppDispatch>();
   const data = useSelector<AppState>((state) => state.user.data) as IUser[];
   const userId = localStorage.getItem("userId");
@@ -18,26 +19,29 @@ const PeopleCards = () => {
 
   return (
     <Card className="bg-body rounded-4 shadow-lg">
-      <Card.Header className="fw-bold fs-5" style={{ color: "#242d49" }}>
-        People you may know...
-      </Card.Header>
-      {data.map((value) => (
+      <div className="border-2 border-bottom p-2">
+        <Card.Text className="fw-bold fs-5 ms-2" style={{ color: "#242d49" }}>
+          People you may know...
+        </Card.Text>
+      </div>
+      {filterData.map((value) => (
         <Card.Body key={value._id} className="border-2 border-bottom rounded-4">
           <Row className="w-100 g-0 align-items-center">
             <Col xs={8}>
               <Row className="align-items-center">
-                {value.profilePicture && (
-                  <img
-                    src={`${apiUrl}/${value.profilePicture}`}
-                    alt="img"
-                    style={{
-                      maxWidth: "50px",
-                      height: "50px",
-                      borderRadius: "10px",
-                      objectFit: "cover",
-                    }}
-                  />
-                )}
+                <img
+                  src={
+                    value?.profilePicture
+                      ? `${apiUrl}/images/${value.profilePicture}`
+                      : defaultProfile
+                  }
+                  alt="Profile"
+                  style={{
+                    maxWidth: "55px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
                 <Col>
                   <Card.Title
                     className="fw-semibold fs-6 text-capitalize mb-0"

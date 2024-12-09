@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "http://localhost:4000";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 const authFetch = axios.create({
   baseURL: apiUrl,

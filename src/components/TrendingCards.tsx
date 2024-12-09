@@ -6,9 +6,11 @@ const TrendingCards = () => {
 
   return (
     <Card className="bg-body rounded-4 shadow-lg">
-      <Card.Header className="fw-bold fs-5" style={{ color: "#242d49" }}>
-        Trending for you
-      </Card.Header>
+      <div className="border-2 border-bottom p-2">
+        <Card.Text className="fw-bold fs-5 ms-2" style={{ color: "#242d49" }}>
+          Trending for you
+        </Card.Text>
+      </div>
       <Card.Body>
         <Row className="w-100 g-1 align-items-center">
           {trendingData.map((value, index) => (

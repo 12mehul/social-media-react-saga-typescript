@@ -7,10 +7,16 @@ import {
   faCalendarAlt,
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { AppState } from "../redux/store/store";
+import { IUser } from "../redux/types/IUser";
+import defaultProfile from "../assets/defaultProfile.png";
 
 const SharePostCard = () => {
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<File | null>(null);
+  const data = useSelector<AppState>((state) => state.profile.data) as IUser;
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -22,9 +28,25 @@ const SharePostCard = () => {
 
   return (
     <Card className="bg-body rounded-4 shadow-lg">
-      <Card.Header className="fw-bold fs-5" style={{ color: "#242d49" }}>
-        Create a Post
-      </Card.Header>
+      <div className="d-flex align-items-center border-2 border-bottom p-1">
+        <img
+          src={
+            data?.profilePicture
+              ? `${apiUrl}/images/${data.profilePicture}`
+              : defaultProfile
+          }
+          alt="Profile"
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
+        />
+        <Card.Text className="fw-bold fs-5 ms-2" style={{ color: "#242d49" }}>
+          Create a Post
+        </Card.Text>
+      </div>
       <Card.Body>
         <Row className="w-100 g-3">
           <Col xs={12}>
