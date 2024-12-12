@@ -39,28 +39,28 @@ const Navbars = () => {
           <Col xs={6}>
             <Nav className="justify-content-center gap-4">
               <Nav.Link
-                href="#home"
+                href="/home"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
               >
                 <FontAwesomeIcon icon={faHome} size="xl" />
                 <span className="nav-label">Home</span>
               </Nav.Link>
               <Nav.Link
-                href="#friendlists"
+                href="/friend-lists"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
               >
                 <FontAwesomeIcon icon={faUserFriends} size="xl" />
                 <span className="nav-label">Friends List</span>
               </Nav.Link>
               <Nav.Link
-                href="#profile"
+                href="/profile"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
               >
                 <FontAwesomeIcon icon={faUser} size="xl" />
                 <span className="nav-label">Profile</span>
               </Nav.Link>
               <Nav.Link
-                href="#settings"
+                href="/settings"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
               >
                 <FontAwesomeIcon icon={faCog} size="xl" />

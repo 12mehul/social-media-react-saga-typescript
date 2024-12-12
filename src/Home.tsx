@@ -10,7 +10,7 @@ const Home = () => {
       <Row className="w-100">
         {/* Left Column */}
         <Col md={3}>
-          <PeopleCards />
+          <PeopleCards page="home" />
         </Col>
         {/* Center Column */}
         <Col md={6} className="mx-auto">

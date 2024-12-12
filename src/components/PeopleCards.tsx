@@ -1,21 +1,66 @@
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../redux/store/store";
 import { IUser } from "../redux/types/IUser";
-import { useEffect } from "react";
 import { UserRequest } from "../redux/slice/userSlice";
 import defaultProfile from "../assets/defaultProfile.png";
+import { Link } from "react-router-dom";
+import adminFetch from "../axiosbase/interceptors";
+import toast from "react-hot-toast";
 
-const PeopleCards = () => {
+interface PeopleCardsProps {
+  page: "home" | "friendlist";
+}
+
+const PeopleCards = ({ page }: PeopleCardsProps) => {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch<AppDispatch>();
   const data = useSelector<AppState>((state) => state.user.data) as IUser[];
   const userId = localStorage.getItem("userId");
-  const filterData = data.filter((item) => item._id !== userId);
+  const [following, setFollowing] = useState<string[]>([]);
+  const displayData =
+    page === "home"
+      ? data.filter((item) => item._id !== userId).slice(0, 5)
+      : data.filter((item) => item._id !== userId);
 
   useEffect(() => {
     dispatch(UserRequest());
   }, []);
+
+  useEffect(() => {
+    // Initial following state
+    const initialFollowing = displayData
+      .filter((item) => item.followers.includes(userId))
+      .map((item) => item._id);
+    setFollowing(initialFollowing);
+  }, [data]);
+
+  const handleFollowButton = async (selectedUserId: string) => {
+    try {
+      if (!selectedUserId) return;
+      const action = following.includes(selectedUserId) ? "unfollow" : "follow";
+
+      const res =
+        action === "follow"
+          ? await adminFetch.put(`/user/${selectedUserId}/follow`, {
+              _id: userId,
+            })
+          : await adminFetch.put(`/user/${selectedUserId}/unfollow`, {
+              _id: userId,
+            });
+      toast.success(res.data);
+
+      setFollowing(
+        (prev) =>
+          action === "follow"
+            ? [...prev, selectedUserId] // Add user to following list
+            : prev.filter((id) => id !== selectedUserId) // Remove user from following list
+      );
+    } catch (error: any) {
+      toast.error(error.response?.data);
+    }
+  };
 
   return (
     <Card className="bg-body rounded-4 shadow-lg">
@@ -24,7 +69,7 @@ const PeopleCards = () => {
           People you may know...
         </Card.Text>
       </div>
-      {filterData.map((value) => (
+      {displayData.map((value) => (
         <Card.Body key={value._id} className="border-2 border-bottom rounded-4">
           <Row className="w-100 g-0 align-items-center">
             <Col xs={8}>
@@ -60,11 +105,25 @@ const PeopleCards = () => {
               </Row>
             </Col>
             <Col>
-              <Button variant="primary">Unfollow</Button>
+              <Button
+                variant="primary"
+                onClick={() => handleFollowButton(value._id)}
+              >
+                {following.includes(value._id) ? "Unfollow" : "Follow"}
+              </Button>
             </Col>
           </Row>
         </Card.Body>
       ))}
+      {page === "home" && (
+        <div className="p-2 d-flex align-items-center justify-content-center">
+          <Link to="/friend-lists" className="w-100">
+            <Button variant="primary" className="w-100">
+              See all
+            </Button>
+          </Link>
+        </div>
+      )}
     </Card>
   );
 };
