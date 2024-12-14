@@ -15,7 +15,7 @@ const Home = () => {
         {/* Center Column */}
         <Col md={6} className="mx-auto">
           <SharePostCard />
-          <SharePostDisplay />
+          <SharePostDisplay page="home" />
         </Col>
         {/* Right Column */}
         <Col md={3}>

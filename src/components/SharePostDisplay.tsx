@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,8 +12,14 @@ import { AppDispatch, AppState } from "../redux/store/store";
 import { IUser } from "../redux/types/IUser";
 import { TimelineRequest } from "../redux/slice/timelineSlice";
 import { ITimeline } from "../redux/types/ITimeline";
+import toast from "react-hot-toast";
+import adminFetch from "../axiosbase/interceptors";
 
-const SharePostDisplay = () => {
+interface SharePostDisplayProps {
+  page: "home" | "profile";
+}
+
+const SharePostDisplay = ({ page }: SharePostDisplayProps) => {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector<AppState>((state) => state.user.data) as IUser[];
@@ -21,6 +27,7 @@ const SharePostDisplay = () => {
     (state) => state.timeline.data
   ) as ITimeline[];
   const userId = localStorage.getItem("userId");
+  const [liked, setLiked] = useState<string[]>([]);
 
   useEffect(() => {
     if (userId) {
@@ -28,11 +35,47 @@ const SharePostDisplay = () => {
     }
   }, []);
 
+  const displayData =
+    page === "home"
+      ? timeline
+      : timeline.filter((item) => item.userId === userId);
+
   const findUser = (userId: string) => user.find((user) => user._id === userId);
+
+  useEffect(() => {
+    if (!userId) return;
+    // Initial liked state
+    const initialLiked = displayData
+      .filter((item) => item.likes.includes(userId))
+      .map((item) => item._id);
+    setLiked(initialLiked);
+  }, [timeline]);
+
+  const handleLikeButton = async (selectedPostId: string) => {
+    try {
+      if (!userId || !selectedPostId) return;
+      const action = liked.includes(selectedPostId) ? "unlike" : "like";
+
+      const res = await adminFetch.put(`/post/${selectedPostId}/like_dislike`, {
+        userId,
+      });
+      toast.success(res.data);
+
+      setLiked(
+        (prev) =>
+          action === "like"
+            ? [...prev, selectedPostId] // Add post to liked list
+            : prev.filter((id) => id !== selectedPostId) // Remove post from liked list
+      );
+      dispatch(TimelineRequest(userId));
+    } catch (error: any) {
+      toast.error(error.response?.data);
+    }
+  };
 
   return (
     <>
-      {timeline.map((value) => {
+      {displayData.map((value) => {
         const matchedUser = findUser(value.userId);
         return (
           <Card className="bg-body rounded-4 shadow-lg mt-2" key={value._id}>
@@ -84,11 +127,20 @@ const SharePostDisplay = () => {
             <Card.Body>
               <Row className="w-100 g-0 align-items-center">
                 <Col xs={3} className="d-flex justify-content-between">
-                  <Button variant="light" title="Like" className="p-2 border-0">
+                  <Button
+                    variant="light"
+                    title={`${liked.includes(value._id) ? "UnLike" : "Like"}`}
+                    className="p-2 border-0"
+                    onClick={() => handleLikeButton(value._id)}
+                  >
                     <FontAwesomeIcon
                       icon={faThumbsUp}
                       size="lg"
-                      className="text-body-secondary"
+                      className={`${
+                        liked.includes(value._id)
+                          ? "text-primary"
+                          : "text-secondary"
+                      }`}
                     />
                   </Button>
                   <Button
@@ -117,7 +169,7 @@ const SharePostDisplay = () => {
               </Row>
               <div className="d-flex align-items-center">
                 <Card.Text className="fw-medium text-secondary me-3 mb-0">
-                  0 likes
+                  {value.likes.length} likes
                 </Card.Text>
                 <Card.Text className="fw-medium mb-0">{value.desc}</Card.Text>
               </div>
