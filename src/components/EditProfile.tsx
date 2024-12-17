@@ -1,6 +1,90 @@
-import { Accordion, Button } from "react-bootstrap";
+import { useState } from "react";
+import { Accordion, Button, Card, Col, Form, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { AppState } from "../redux/store/store";
+import { IUser } from "../redux/types/IUser";
+import { useFormik } from "formik";
+import adminFetch from "../axiosbase/interceptors";
+import toast from "react-hot-toast";
 
 const EditProfile = () => {
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const data = useSelector<AppState>((state) => state.profile.data) as IUser;
+  const userId = localStorage.getItem("userId");
+
+  const initialValues: IUser = {
+    email: data?.email,
+    firstname: data?.firstname,
+    lastname: data?.lastname,
+    profilePicture: data?.profilePicture,
+    coverPicture: data?.coverPicture,
+    livesin: data?.livesin,
+    worksAt: data?.worksAt,
+    country: data?.country,
+    relationship: data?.relationship,
+  };
+
+  const uploadImage = async (file: File, fieldName: string) => {
+    const formData = new FormData();
+    const fileName = Date.now() + file.name;
+    formData.append("name", fileName);
+    formData.append("file", file);
+
+    try {
+      const res = await adminFetch.post("/upload", formData);
+      if (res.status === 200) {
+        toast.success(`${fieldName} uploaded successfully`);
+        return fileName;
+      }
+    } catch (err) {
+      toast.error(`Failed to upload ${fieldName}`);
+    }
+    return null;
+  };
+
+  const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
+    initialValues,
+    enableReinitialize: true, // Allows reinitialization when initialValues change
+    onSubmit: async (values) => {
+      try {
+        // Upload Profile Image
+        if (profileImage) {
+          const uploadedProfileName = await uploadImage(
+            profileImage,
+            "Profile picture"
+          );
+          if (uploadedProfileName) values.profilePicture = uploadedProfileName;
+        }
+
+        // Upload Cover Image
+        if (coverImage) {
+          const uploadedCoverName = await uploadImage(
+            coverImage,
+            "Cover picture"
+          );
+          if (uploadedCoverName) values.coverPicture = uploadedCoverName;
+        }
+
+        // Update user details
+        const res = await adminFetch.put(`/user/${userId}`, values);
+        if (res.status === 200) toast.success("Profile updated successfully");
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
+    },
+  });
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const fileName = Date.now() + file.name;
+      setFieldValue(event.target.name, fileName);
+      if (event.target.name === "profilePicture") setProfileImage(file);
+      else if (event.target.name === "coverPicture") setCoverImage(file);
+    }
+  };
+
   return (
     <Accordion
       defaultActiveKey={["0", "2"]}
@@ -20,13 +104,69 @@ const EditProfile = () => {
           </span>
         </Accordion.Header>
         <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
+            <Form onSubmit={handleSubmit}>
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="firstname">
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="firstname"
+                    value={values.firstname}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} controlId="lastname">
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="lastname"
+                    value={values.lastname}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Row>
+              <Form.Group className="mb-3" as={Col} controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  className="p-2 bg-dark-subtle"
+                  type="email"
+                  name="email"
+                  disabled
+                  value={values.email}
+                />
+              </Form.Group>
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="profilePicture">
+                  <Form.Label>Profile Image</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="file"
+                    name="profilePicture"
+                    onChange={handleImageChange}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} controlId="coverPicture">
+                  <Form.Label>Cover Image</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="file"
+                    name="coverPicture"
+                    onChange={handleImageChange}
+                  />
+                </Form.Group>
+              </Row>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 p-2 rounded-3"
+              >
+                Update Details
+              </Button>
+            </Form>
+          </Card>
         </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item eventKey="1">
@@ -42,13 +182,63 @@ const EditProfile = () => {
           </span>
         </Accordion.Header>
         <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" as={Col} controlId="worksAt">
+                <Form.Label>Works At</Form.Label>
+                <Form.Control
+                  className="p-2 bg-dark-subtle"
+                  type="text"
+                  name="worksAt"
+                  placeholder="Enter Works At"
+                  value={values.worksAt}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="livesin">
+                  <Form.Label>Lives In</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="livesin"
+                    placeholder="Enter Lives In"
+                    value={values.livesin}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} controlId="country">
+                  <Form.Label>Country</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="text"
+                    name="country"
+                    placeholder="Enter Country"
+                    value={values.country}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+              </Row>
+              <Form.Group className="mb-3" as={Col} controlId="relationship">
+                <Form.Label>Relationship Status</Form.Label>
+                <Form.Control
+                  className="p-2 bg-dark-subtle"
+                  type="text"
+                  name="relationship"
+                  placeholder="Enter Relationship Status"
+                  value={values.relationship}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 p-2 rounded-3"
+              >
+                Update Bio
+              </Button>
+            </Form>
+          </Card>
         </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item eventKey="2">

@@ -19,14 +19,14 @@
 
 /* Navbar Link Default Styles */
 .nav-icon {
-  color: var(--black);
+  /* color: var(--black); */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.nav-icon:hover {
+/* .nav-icon:hover {
   color: #033491;
-}
+} */
 
 .nav-label {
   font-size: 0.75rem;

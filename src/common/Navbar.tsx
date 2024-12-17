@@ -15,6 +15,7 @@ import { ProfileRequest } from "../redux/slice/profileSlice";
 const Navbars = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = localStorage.getItem("userId");
+  const isActive = (path: string) => window.location.pathname === path;
 
   useEffect(() => {
     if (userId) {
@@ -41,6 +42,7 @@ const Navbars = () => {
               <Nav.Link
                 href="/home"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
+                style={{ color: isActive("/home") ? "#033491" : "#242d49" }}
               >
                 <FontAwesomeIcon icon={faHome} size="xl" />
                 <span className="nav-label">Home</span>
@@ -48,6 +50,9 @@ const Navbars = () => {
               <Nav.Link
                 href="/friend-lists"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
+                style={{
+                  color: isActive("/friend-lists") ? "#033491" : "#242d49",
+                }}
               >
                 <FontAwesomeIcon icon={faUserFriends} size="xl" />
                 <span className="nav-label">Friends List</span>
@@ -55,6 +60,7 @@ const Navbars = () => {
               <Nav.Link
                 href="/profile"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
+                style={{ color: isActive("/profile") ? "#033491" : "#242d49" }}
               >
                 <FontAwesomeIcon icon={faUser} size="xl" />
                 <span className="nav-label">Profile</span>
@@ -62,6 +68,7 @@ const Navbars = () => {
               <Nav.Link
                 href="/settings"
                 className="nav-icon d-flex flex-column align-items-center fw-bold"
+                style={{ color: isActive("/settings") ? "#033491" : "#242d49" }}
               >
                 <FontAwesomeIcon icon={faCog} size="xl" />
                 <span className="nav-label">Settings</span>

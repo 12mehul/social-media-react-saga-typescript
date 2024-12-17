@@ -21,6 +21,18 @@ const ProfileCard = () => {
 
   return (
     <Card className="bg-body h-35 rounded-4 shadow-lg p-3">
+      {data?.coverPicture && (
+        <Card.Body
+          className="rounded-4"
+          style={{
+            backgroundImage: `url(${apiUrl}/images/${data?.coverPicture})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "200px",
+            border: "1px solid #788097",
+          }}
+        ></Card.Body>
+      )}
       <Card.Body>
         <Row className="align-items-center justify-content-center">
           <Col xs={3} className="d-flex flex-column align-items-center">
@@ -53,17 +65,21 @@ const ProfileCard = () => {
               </Card.Text>
             </div>
             <div className="text-center">
-              <Card.Text className="fw-bold text-dark mb-0">
-                {data?.followers.length}
-              </Card.Text>
+              {data?.followers && (
+                <Card.Text className="fw-bold text-dark mb-0">
+                  {data?.followers.length}
+                </Card.Text>
+              )}
               <Card.Text className="fw-semibold text-secondary">
                 Followers
               </Card.Text>
             </div>
             <div className="text-center">
-              <Card.Text className="fw-bold text-dark mb-0">
-                {data?.following.length}
-              </Card.Text>
+              {data?.following && (
+                <Card.Text className="fw-bold text-dark mb-0">
+                  {data?.following.length}
+                </Card.Text>
+              )}
               <Card.Text className="fw-semibold text-secondary">
                 Following
               </Card.Text>
