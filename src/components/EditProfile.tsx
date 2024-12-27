@@ -85,6 +85,14 @@ const EditProfile = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    toast.success("Logged out successfully!");
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 1000);
+  };
+
   return (
     <Accordion
       defaultActiveKey={["0", "2"]}
@@ -254,7 +262,11 @@ const EditProfile = () => {
           </span>
         </Accordion.Header>
         <Accordion.Body>
-          <Button variant="primary" className="w-100 fw-semibold">
+          <Button
+            variant="primary"
+            className="w-100 fw-semibold"
+            onClick={() => handleLogout()}
+          >
             Log Out
           </Button>
         </Accordion.Body>

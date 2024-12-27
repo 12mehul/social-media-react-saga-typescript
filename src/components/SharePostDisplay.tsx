@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Card, Col, Overlay, Popover, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
   faCommentDots,
   faShareAlt,
+  faEllipsis,
 } from "@fortawesome/free-solid-svg-icons";
 import defaultProfile from "../assets/defaultProfile.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import { TimelineRequest } from "../redux/slice/timelineSlice";
 import { ITimeline } from "../redux/types/ITimeline";
 import toast from "react-hot-toast";
 import adminFetch from "../axiosbase/interceptors";
+import DeleteModal from "./DeleteModal";
 
 interface SharePostDisplayProps {
   page: "home" | "profile";
@@ -28,6 +30,10 @@ const SharePostDisplay = ({ page }: SharePostDisplayProps) => {
   ) as ITimeline[];
   const userId = localStorage.getItem("userId");
   const [liked, setLiked] = useState<string[]>([]);
+  const [show, setShow] = useState<boolean>(false);
+  const [target, setTarget] = useState<HTMLElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [delModal, setDelModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (userId) {
@@ -73,6 +79,14 @@ const SharePostDisplay = ({ page }: SharePostDisplayProps) => {
     }
   };
 
+  const handleMoreClick = (event: React.MouseEvent<HTMLElement>) => {
+    setShow(!show);
+    setTarget(event.currentTarget);
+  };
+
+  const handleShowModal = () => setDelModal(true);
+  const handleCloseModal = () => setDelModal(false);
+
   return (
     <>
       {displayData.map((value) => {
@@ -102,9 +116,48 @@ const SharePostDisplay = ({ page }: SharePostDisplayProps) => {
                   {matchedUser?.firstname} {matchedUser?.lastname}
                 </Card.Text>
               </div>
-              <Card.Text className="fw-medium text-secondary mb-0">
-                {value.createdAt.split("T")[0]}
-              </Card.Text>
+              <div className="d-flex align-items-center gap-1">
+                <Card.Text className="fw-medium text-secondary mb-0">
+                  {value.createdAt.split("T")[0]}
+                </Card.Text>
+                {page === "profile" && (
+                  <div ref={ref}>
+                    <Button
+                      variant="light"
+                      title="More"
+                      className="p-2 border-0"
+                      onClick={handleMoreClick}
+                    >
+                      <FontAwesomeIcon
+                        icon={faEllipsis}
+                        size="lg"
+                        className="text-body-secondary"
+                      />
+                    </Button>
+                    <Overlay
+                      show={show}
+                      target={target}
+                      placement="bottom"
+                      container={ref.current}
+                      containerPadding={20}
+                      rootClose={true}
+                      onHide={() => setShow(false)}
+                    >
+                      <Popover id="popover-contained">
+                        <Popover.Header style={{ cursor: "pointer" }}>
+                          Edit Post
+                        </Popover.Header>
+                        <Popover.Header
+                          style={{ cursor: "pointer" }}
+                          onClick={handleShowModal}
+                        >
+                          Delete Post
+                        </Popover.Header>
+                      </Popover>
+                    </Overlay>
+                  </div>
+                )}
+              </div>
             </div>
             <Card.Body>
               <Row className="w-100 g-3">
@@ -177,6 +230,9 @@ const SharePostDisplay = ({ page }: SharePostDisplayProps) => {
           </Card>
         );
       })}
+      {delModal && (
+        <DeleteModal show={delModal} handleClose={handleCloseModal} />
+      )}
     </>
   );
 };

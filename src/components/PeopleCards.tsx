@@ -31,9 +31,9 @@ const PeopleCards = ({ page }: PeopleCardsProps) => {
   useEffect(() => {
     // Initial following state
     const initialFollowing = displayData
-      .filter((item) => item.followers.includes(userId))
-      .map((item) => item._id);
-    setFollowing(initialFollowing);
+      .filter((item) => item.followers && item.followers.includes(userId))
+      .map((item) => item._id as string);
+    setFollowing(initialFollowing as string[]);
   }, [data]);
 
   const handleFollowButton = async (selectedUserId: string) => {
@@ -107,9 +107,11 @@ const PeopleCards = ({ page }: PeopleCardsProps) => {
             <Col>
               <Button
                 variant="primary"
-                onClick={() => handleFollowButton(value._id)}
+                onClick={() => handleFollowButton(value._id as string)}
               >
-                {following.includes(value._id) ? "Unfollow" : "Follow"}
+                {following.includes(value._id as string)
+                  ? "Unfollow"
+                  : "Follow"}
               </Button>
             </Col>
           </Row>
