@@ -6,12 +6,14 @@ import { IUser } from "../redux/types/IUser";
 import { useFormik } from "formik";
 import adminFetch from "../axiosbase/interceptors";
 import toast from "react-hot-toast";
+import DeleteModal from "./DeleteModal";
 
 const EditProfile = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const data = useSelector<AppState>((state) => state.profile.data) as IUser;
   const userId = localStorage.getItem("userId");
+  const [delModal, setDelModal] = useState<boolean>(false);
 
   const initialValues: IUser = {
     email: data?.email,
@@ -93,185 +95,225 @@ const EditProfile = () => {
     }, 1000);
   };
 
+  const handleShowModal = () => setDelModal(true);
+  const handleCloseModal = () => setDelModal(false);
+
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await adminFetch.delete(`/user/${userId}`, {
+        data: { _id: userId, currentUserAdminStatus: false },
+      });
+      if (res.status === 200) {
+        toast.success("Account deleted successfully");
+        handleCloseModal();
+        setTimeout(() => {
+          handleLogout();
+        }, 2000);
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
-    <Accordion
-      defaultActiveKey={["0", "2"]}
-      alwaysOpen
-      className="bg-body rounded-4 shadow-lg"
-    >
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>
-          <span
-            style={{
-              color: "#242d49",
-              fontSize: "20px",
-              fontWeight: "bold",
-            }}
-          >
-            Profile Info
-          </span>
-        </Accordion.Header>
-        <Accordion.Body>
-          <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
-            <Form onSubmit={handleSubmit}>
-              <Row className="mb-3">
-                <Form.Group as={Col} controlId="firstname">
-                  <Form.Label>First Name</Form.Label>
+    <>
+      <Accordion
+        defaultActiveKey={["0", "2"]}
+        alwaysOpen
+        className="bg-body rounded-4 shadow-lg"
+      >
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>
+            <span
+              style={{
+                color: "#242d49",
+                fontSize: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              Profile Info
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
+              <Form onSubmit={handleSubmit}>
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="firstname">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="text"
+                      name="firstname"
+                      value={values.firstname}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="lastname">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="text"
+                      name="lastname"
+                      value={values.lastname}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Row>
+                <Form.Group className="mb-3" as={Col} controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    className="p-2 bg-dark-subtle"
+                    type="email"
+                    name="email"
+                    disabled
+                    value={values.email}
+                  />
+                </Form.Group>
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="profilePicture">
+                    <Form.Label>Profile Image</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="file"
+                      name="profilePicture"
+                      onChange={handleImageChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="coverPicture">
+                    <Form.Label>Cover Image</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="file"
+                      name="coverPicture"
+                      onChange={handleImageChange}
+                    />
+                  </Form.Group>
+                </Row>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100 p-2 rounded-3"
+                >
+                  Update Details
+                </Button>
+              </Form>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>
+            <span
+              style={{
+                color: "#242d49",
+                fontSize: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              Bio
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" as={Col} controlId="worksAt">
+                  <Form.Label>Works At</Form.Label>
                   <Form.Control
                     className="p-2 bg-dark-subtle"
                     type="text"
-                    name="firstname"
-                    value={values.firstname}
+                    name="worksAt"
+                    placeholder="Enter Works At"
+                    value={values.worksAt}
                     onChange={handleChange}
                   />
                 </Form.Group>
-                <Form.Group as={Col} controlId="lastname">
-                  <Form.Label>Last Name</Form.Label>
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="livesin">
+                    <Form.Label>Lives In</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="text"
+                      name="livesin"
+                      placeholder="Enter Lives In"
+                      value={values.livesin}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="country">
+                    <Form.Label>Country</Form.Label>
+                    <Form.Control
+                      className="p-2 bg-dark-subtle"
+                      type="text"
+                      name="country"
+                      placeholder="Enter Country"
+                      value={values.country}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Row>
+                <Form.Group className="mb-3" as={Col} controlId="relationship">
+                  <Form.Label>Relationship Status</Form.Label>
                   <Form.Control
                     className="p-2 bg-dark-subtle"
                     type="text"
-                    name="lastname"
-                    value={values.lastname}
+                    name="relationship"
+                    placeholder="Enter Relationship Status"
+                    value={values.relationship}
                     onChange={handleChange}
                   />
                 </Form.Group>
-              </Row>
-              <Form.Group className="mb-3" as={Col} controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  className="p-2 bg-dark-subtle"
-                  type="email"
-                  name="email"
-                  disabled
-                  value={values.email}
-                />
-              </Form.Group>
-              <Row className="mb-3">
-                <Form.Group as={Col} controlId="profilePicture">
-                  <Form.Label>Profile Image</Form.Label>
-                  <Form.Control
-                    className="p-2 bg-dark-subtle"
-                    type="file"
-                    name="profilePicture"
-                    onChange={handleImageChange}
-                  />
-                </Form.Group>
-                <Form.Group as={Col} controlId="coverPicture">
-                  <Form.Label>Cover Image</Form.Label>
-                  <Form.Control
-                    className="p-2 bg-dark-subtle"
-                    type="file"
-                    name="coverPicture"
-                    onChange={handleImageChange}
-                  />
-                </Form.Group>
-              </Row>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100 p-2 rounded-3"
+                >
+                  Update Bio
+                </Button>
+              </Form>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>
+            <span
+              style={{
+                color: "#242d49",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}
+            >
+              Sign Out All Devices
+            </span>
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
+              <Button
+                variant="danger"
+                className="w-100 fw-semibold mb-3"
+                onClick={handleShowModal}
+              >
+                Delete Your Account
+              </Button>
               <Button
                 variant="primary"
-                type="submit"
-                className="w-100 p-2 rounded-3"
+                className="w-100 fw-semibold"
+                onClick={() => handleLogout()}
               >
-                Update Details
+                Log Out of All Devices
               </Button>
-            </Form>
-          </Card>
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>
-          <span
-            style={{
-              color: "#242d49",
-              fontSize: "20px",
-              fontWeight: "bold",
-            }}
-          >
-            Bio
-          </span>
-        </Accordion.Header>
-        <Accordion.Body>
-          <Card className="p-4 w-100 rounded-4 shadow-sm bg-transparent">
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" as={Col} controlId="worksAt">
-                <Form.Label>Works At</Form.Label>
-                <Form.Control
-                  className="p-2 bg-dark-subtle"
-                  type="text"
-                  name="worksAt"
-                  placeholder="Enter Works At"
-                  value={values.worksAt}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Row className="mb-3">
-                <Form.Group as={Col} controlId="livesin">
-                  <Form.Label>Lives In</Form.Label>
-                  <Form.Control
-                    className="p-2 bg-dark-subtle"
-                    type="text"
-                    name="livesin"
-                    placeholder="Enter Lives In"
-                    value={values.livesin}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <Form.Group as={Col} controlId="country">
-                  <Form.Label>Country</Form.Label>
-                  <Form.Control
-                    className="p-2 bg-dark-subtle"
-                    type="text"
-                    name="country"
-                    placeholder="Enter Country"
-                    value={values.country}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Row>
-              <Form.Group className="mb-3" as={Col} controlId="relationship">
-                <Form.Label>Relationship Status</Form.Label>
-                <Form.Control
-                  className="p-2 bg-dark-subtle"
-                  type="text"
-                  name="relationship"
-                  placeholder="Enter Relationship Status"
-                  value={values.relationship}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Button
-                variant="primary"
-                type="submit"
-                className="w-100 p-2 rounded-3"
-              >
-                Update Bio
-              </Button>
-            </Form>
-          </Card>
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="2">
-        <Accordion.Header>
-          <span
-            style={{
-              color: "#242d49",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
-          >
-            Sign Out All Devices
-          </span>
-        </Accordion.Header>
-        <Accordion.Body>
-          <Button
-            variant="primary"
-            className="w-100 fw-semibold"
-            onClick={() => handleLogout()}
-          >
-            Log Out
-          </Button>
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+      {delModal && (
+        <DeleteModal
+          title=" Deleting your account is permanent, so are you sure you want to proceed with 
+          deleting your account?"
+          show={delModal}
+          handleClose={handleCloseModal}
+          handleDelete={handleDeleteAccount}
+        />
+      )}
+    </>
   );
 };
 
