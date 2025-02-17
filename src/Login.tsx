@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import socialImg from "./assets/login-img.png";
 import { useNavigate } from "react-router-dom";
@@ -47,21 +47,39 @@ const Login = () => {
       className="d-flex justify-content-center align-items-center"
       style={{ minHeight: "100vh" }}
     >
-      <Row className="w-100">
+      <Row
+        className="w-100"
+        style={{
+          background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+          borderRadius: "33px",
+        }}
+      >
+        {/* Login Form Section */}
         <Col
           md={6}
           className="d-flex justify-content-center align-items-center"
         >
           <Card
-            className="p-4 rounded-4 shadow-sm bg-transparent"
-            style={{ maxWidth: "400px", width: "100%" }}
+            className="p-4 shadow-lg"
+            style={{
+              maxWidth: "400px",
+              width: "100%",
+              background: "white",
+              margin: "18px 0px",
+              borderRadius: "33px",
+            }}
           >
-            <h3 className="text-center mb-4 text-muted fw-bold">Log In</h3>
+            <h4 className="text-center mb-3 text-primary fw-bold">
+              Welcome Back
+            </h4>
+            <h5 className="text-center mb-4 text-muted">
+              Login to your account
+            </h5>
             <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" as={Col} controlId="email">
+              <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  className="p-2 bg-dark-subtle"
+                  className="p-2"
                   type="email"
                   name="email"
                   placeholder="Enter Email"
@@ -73,25 +91,23 @@ const Login = () => {
                   <Form.Text className="text-danger">{errors.email}</Form.Text>
                 )}
               </Form.Group>
-              <Row className="mb-3">
-                <Form.Group as={Col} controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    className="p-2 bg-dark-subtle"
-                    type="password"
-                    name="password"
-                    placeholder="Enter Password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {touched.password && errors.password && (
-                    <Form.Text className="text-danger">
-                      {errors.password}
-                    </Form.Text>
-                  )}
-                </Form.Group>
-              </Row>
+              <Form.Group className="mb-3" controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  className="p-2"
+                  type="password"
+                  name="password"
+                  placeholder="Enter Password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {touched.password && errors.password && (
+                  <Form.Text className="text-danger">
+                    {errors.password}
+                  </Form.Text>
+                )}
+              </Form.Group>
               <Button
                 variant="primary"
                 type="submit"
@@ -100,24 +116,24 @@ const Login = () => {
                 Login
               </Button>
             </Form>
-            <p className="text-center mt-2 text-white">
+            <p className="text-center mt-3 text-muted">
               Don't have an account?
-              <a href="/" className="link-primary fw-semibold">
+              <a href="/" className="text-primary fw-semibold">
                 {" "}
-                SignUp
-              </a>{" "}
-              here
+                Sign Up
+              </a>
             </p>
           </Card>
         </Col>
+        {/* Illustration Section */}
         <Col
           md={6}
-          className="d-flex justify-content-center align-items-center p-0"
+          className="d-flex justify-content-center align-items-center p-4"
         >
           <div style={{ maxWidth: "100%" }}>
             <img
               src={socialImg}
-              alt="Social Media Graphic"
+              alt="Illustration"
               style={{ maxWidth: "100%", height: "auto" }}
             />
           </div>

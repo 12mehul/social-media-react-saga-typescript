@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "./redux/store/store";
@@ -57,15 +57,22 @@ const Register = () => {
       className="d-flex justify-content-center align-items-center"
       style={{ minHeight: "100vh" }}
     >
-      <Row className="w-100">
+      <Row
+        className="w-100"
+        style={{
+          background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+          borderRadius: "33px",
+        }}
+      >
+        {/* Illustration Section */}
         <Col
           md={6}
-          className="d-flex justify-content-center align-items-center p-0"
+          className="d-flex justify-content-center align-items-center p-4"
         >
           <div style={{ maxWidth: "100%" }}>
             <img
               src={socialImg}
-              alt="Social Media Graphic"
+              alt="Illustration"
               style={{ maxWidth: "100%", height: "auto" }}
             />
           </div>
@@ -75,16 +82,27 @@ const Register = () => {
           className="d-flex justify-content-center align-items-center"
         >
           <Card
-            className="p-4 rounded-4 shadow-sm bg-transparent"
-            style={{ maxWidth: "500px", width: "100%" }}
+            className="p-4 shadow-lg"
+            style={{
+              maxWidth: "550px",
+              width: "100%",
+              background: "white",
+              margin: "18px 0px",
+              borderRadius: "33px",
+            }}
           >
-            <h3 className="text-center mb-4 text-muted fw-bold">Sign Up</h3>
+            <h4 className="text-center mb-3 text-primary fw-bold">
+              Welcome Back
+            </h4>
+            <h5 className="text-center mb-4 text-muted">
+              Sign Up to your account
+            </h5>
             <Form onSubmit={handleSubmit}>
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="firstname">
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
-                    className="p-2 bg-dark-subtle"
+                    className="p-2"
                     type="text"
                     name="firstname"
                     placeholder="Enter First Name"
@@ -101,7 +119,7 @@ const Register = () => {
                 <Form.Group as={Col} controlId="lastname">
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
-                    className="p-2 bg-dark-subtle"
+                    className="p-2"
                     type="text"
                     name="lastname"
                     placeholder="Enter Last Name"
@@ -119,7 +137,7 @@ const Register = () => {
               <Form.Group className="mb-3" as={Col} controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
-                  className="p-2 bg-dark-subtle"
+                  className="p-2"
                   type="email"
                   name="email"
                   placeholder="Enter Email"
@@ -135,7 +153,7 @@ const Register = () => {
                 <Form.Group as={Col} controlId="password">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
-                    className="p-2 bg-dark-subtle"
+                    className="p-2"
                     type="password"
                     name="password"
                     placeholder="Enter Password"
@@ -152,7 +170,7 @@ const Register = () => {
                 <Form.Group as={Col} controlId="confirmpass">
                   <Form.Label>Confirm Password</Form.Label>
                   <Form.Control
-                    className="p-2 bg-dark-subtle"
+                    className="p-2"
                     type="password"
                     name="confirmpass"
                     placeholder="Enter Confirm Password"
@@ -175,13 +193,12 @@ const Register = () => {
                 Sign Up
               </Button>
             </Form>
-            <p className="text-center mt-2 text-white">
+            <p className="text-center mt-3 text-muted">
               Already have an account?
-              <a href="/login" className="link-primary fw-semibold">
+              <a href="/login" className="text-primary fw-semibold">
                 {" "}
                 Login
-              </a>{" "}
-              here
+              </a>
             </p>
           </Card>
         </Col>
