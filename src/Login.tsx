@@ -86,9 +86,12 @@ const Login = () => {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isInvalid={!!errors.email && !!touched.email}
                 />
                 {touched.email && errors.email && (
-                  <Form.Text className="text-danger">{errors.email}</Form.Text>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email}
+                  </Form.Control.Feedback>
                 )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="password">
@@ -101,11 +104,12 @@ const Login = () => {
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isInvalid={!!errors.password && !!touched.password}
                 />
                 {touched.password && errors.password && (
-                  <Form.Text className="text-danger">
+                  <Form.Control.Feedback type="invalid">
                     {errors.password}
-                  </Form.Text>
+                  </Form.Control.Feedback>
                 )}
               </Form.Group>
               <Button

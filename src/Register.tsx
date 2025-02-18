@@ -109,11 +109,12 @@ const Register = () => {
                     value={values.firstname}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isInvalid={!!errors.firstname && !!touched.firstname}
                   />
                   {touched.firstname && errors.firstname && (
-                    <Form.Text className="text-danger">
+                    <Form.Control.Feedback type="invalid">
                       {errors.firstname}
-                    </Form.Text>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <Form.Group as={Col} controlId="lastname">
@@ -126,11 +127,12 @@ const Register = () => {
                     value={values.lastname}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isInvalid={!!errors.lastname && !!touched.lastname}
                   />
                   {touched.lastname && errors.lastname && (
-                    <Form.Text className="text-danger">
+                    <Form.Control.Feedback type="invalid">
                       {errors.lastname}
-                    </Form.Text>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
               </Row>
@@ -144,9 +146,12 @@ const Register = () => {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  isInvalid={!!errors.email && !!touched.email}
                 />
                 {touched.email && errors.email && (
-                  <Form.Text className="text-danger">{errors.email}</Form.Text>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.email}
+                  </Form.Control.Feedback>
                 )}
               </Form.Group>
               <Row className="mb-3">
@@ -160,11 +165,12 @@ const Register = () => {
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isInvalid={!!errors.password && !!touched.password}
                   />
                   {touched.password && errors.password && (
-                    <Form.Text className="text-danger">
+                    <Form.Control.Feedback type="invalid">
                       {errors.password}
-                    </Form.Text>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <Form.Group as={Col} controlId="confirmpass">
@@ -177,11 +183,12 @@ const Register = () => {
                     value={values.confirmpass}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isInvalid={!!errors.confirmpass && !!touched.confirmpass}
                   />
                   {touched.confirmpass && errors.confirmpass && (
-                    <Form.Text className="text-danger">
+                    <Form.Control.Feedback type="invalid">
                       {errors.confirmpass}
-                    </Form.Text>
+                    </Form.Control.Feedback>
                   )}
                 </Form.Group>
               </Row>
