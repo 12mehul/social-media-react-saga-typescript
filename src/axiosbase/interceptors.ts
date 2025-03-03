@@ -21,13 +21,15 @@ adminFetch.interceptors.request.use(
 
 adminFetch.interceptors.response.use(
   (response: AxiosResponse<any>) => {
-    if (response.status == 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    }
     return response;
   },
   (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.clear();
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+    }
     return Promise.reject(error);
   }
 );
